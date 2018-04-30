@@ -2,7 +2,7 @@
     "name": "ahsankhatri/wordpress-auth-provider",
     "description": "A package to provide wordpress users in laravel authentication system.",
     "keywords": ["laravel", "wordpress", "authentication"],
-    "type": "metapackage",
+    "type": "library",
     "license": "MIT",
     "authors": [
         {
