@@ -4,8 +4,9 @@ namespace MrShan0\WordpressAuth\Hashing;
 
 use Hautelook\Phpass\PasswordHash;
 use Illuminate\Contracts\Hashing\Hasher;
+use Illuminate\Hashing\AbstractHasher;
 
-class WordPressHasher implements Hasher
+class WordPressHasher extends AbstractHasher implements Hasher
 {
     protected $hasher;
 
