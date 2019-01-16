@@ -5,7 +5,7 @@
 ## Installation
 
 To install this package you will need
-  - Laravel 5.4
+  - Laravel 5.5|5.4|5.3|5.2
   - PHP 5.5
 
 The best way to install this package is with the help of composer. Run
@@ -24,20 +24,7 @@ or install it by adding it to `composer.json` then run `composer update`
 
 Once you have installed this package from the [composer](https://packagist.org/packages/ahsankhatri/wordpress-auth-provider), make sure to follow the below steps to configure.
 
-##### config/app.php
-```php
-'providers' => [
-
-    /*
-     * Laravel Framework Service Providers...
-     */
-    ...,
-
-    MrShan0\WordpressAuth\WordpressAuthServiceProvider::class,
-]
-```
-
-Also, to register authentication guard.
+To register authentication guard.
 
 ##### config/auth.php
 ```php
@@ -66,6 +53,21 @@ Also, to register authentication guard.
         'table' => 'password_resets',
         'expire' => 60,
     ],
+```
+
+**Laravel 5.5** uses Package Auto-Discovery, so doesn't require you to manually add the ServiceProvider. Follow following step if you're using less than v5.5.
+
+##### config/app.php
+```php
+'providers' => [
+
+    /*
+     * Laravel Framework Service Providers...
+     */
+    ...,
+
+    MrShan0\WordpressAuth\WordpressAuthServiceProvider::class,
+]
 ```
 
 ## Configuration

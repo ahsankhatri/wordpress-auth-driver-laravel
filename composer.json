@@ -13,12 +13,22 @@
     ],
     "require": {
         "php": ">=5.5.9",
-        "hautelook/phpass": "^1.1",
-        "laravel/framework": "5.4.*"
+        "hautelook/phpass": ">=0.3",
+        "laravel/framework": ">=5.2 <5.6"
     },
     "autoload": {
         "psr-4": {
             "MrShan0\\WordpressAuth\\": "src/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "MrShan0\\WordpressAuth\\WordpressAuthServiceProvider"
+            ]
         }
     }
 }
