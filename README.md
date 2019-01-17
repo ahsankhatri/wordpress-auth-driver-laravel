@@ -5,7 +5,7 @@
 ## Installation
 
 To install this package you will need
-  - Laravel 5.6|5.7
+  - Laravel 5.6|5.7 ([for older versions of laravel](https://github.com/ahsankhatri/wordpress-auth-driver-laravel/tree/v1))
   - PHP 7.1
 
 The best way to install this package is with the help of composer. Run
