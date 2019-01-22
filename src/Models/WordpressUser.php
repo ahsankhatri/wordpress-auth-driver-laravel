@@ -13,21 +13,21 @@ class WordpressUser extends Authenticatable
 
     /**
      * Explicitly define your table name
-     * 
+     *
      * @var string
      */
-    protected $table = 'wp_users';
+    protected $table = 'users';
 
     /**
      * Disable timestamps
-     * 
+     *
      * @var boolean
      */
     public $timestamps = false;
 
     /**
      * Define primary key
-     * 
+     *
      * @var string
      */
     protected $primaryKey = 'ID';
@@ -40,6 +40,15 @@ class WordpressUser extends Authenticatable
     protected $rememberTokenName = false;
 
     /**
+     * The attributes that should be mutated to dates.
+     *
+     * @var array
+     */
+    protected $dates = [
+        'user_registered',
+    ];
+
+    /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
@@ -48,6 +57,37 @@ class WordpressUser extends Authenticatable
         'user_pass',
         'remember_token', // disabled via protected property
     ];
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'user_login',
+        'user_pass',
+        'user_nicename',
+        'user_email',
+        'user_url',
+        'user_registered',
+        'user_activation_key',
+        'user_status',
+        'display_name',
+    ];
+
+    /**
+     * Create a new Eloquent model instance.
+     *
+     * @param  array  $attributes
+     * @return void
+     */
+    public function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+
+        // Set connection from config
+        $this->setConnection(config('wordpress-auth.connection', 'mysql'));
+    }
 
     /**
      * Get the e-mail address where password reset links are sent.
@@ -61,7 +101,7 @@ class WordpressUser extends Authenticatable
 
     /**
      * Return password value
-     * 
+     *
      * @return string
      */
     public function getAuthPassword()
@@ -71,7 +111,7 @@ class WordpressUser extends Authenticatable
 
     /**
      * Usage for notifiable for email
-     * 
+     *
      * @return string
      */
     public function routeNotificationForMail()

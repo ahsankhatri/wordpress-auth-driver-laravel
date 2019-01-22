@@ -2,6 +2,11 @@
 
 [![Latest Stable Version](https://poser.pugx.org/ahsankhatri/wordpress-auth-provider/v/stable)](https://packagist.org/packages/ahsankhatri/wordpress-auth-provider) [![Total Downloads](https://poser.pugx.org/ahsankhatri/wordpress-auth-provider/downloads)](https://packagist.org/packages/ahsankhatri/wordpress-auth-provider) [![Build Status](https://scrutinizer-ci.com/g/ahsankhatri/wordpress-auth-driver-laravel/badges/build.png?b=master)](https://scrutinizer-ci.com/g/ahsankhatri/wordpress-auth-driver-laravel/build-status/master) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/ahsankhatri/wordpress-auth-driver-laravel/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/ahsankhatri/wordpress-auth-driver-laravel/?branch=master) [![Code Intelligence Status](https://scrutinizer-ci.com/g/ahsankhatri/wordpress-auth-driver-laravel/badges/code-intelligence.svg?b=master)](https://scrutinizer-ci.com/code-intelligence) [![License](https://poser.pugx.org/ahsankhatri/wordpress-auth-provider/license)](https://packagist.org/packages/ahsankhatri/wordpress-auth-provider)
 
+| **Laravel**  |  **wordpress-auth-driver-laravel** |
+|---|---|
+| 5.2 to 5.5  | ^1.0  |
+| 5.6 to 5.7  | ^2.0  |
+
 ## Installation
 
 To install this package you will need
@@ -55,6 +60,32 @@ To register authentication guard.
     ],
 ```
 
+#### Publish config file (optional)
+```bash
+php artisan vendor:publish --provider="MrShan0\WordpressAuth\WordpressAuthServiceProvider"
+```
+
+It will publish config file (`config/wordpress-auth.php`) where you can define your own connection type e.g `wp-mysql`. Make sure to fill `prefix` in `config/database.php` for `wp_` prefix in your tables if you're using prefix in wordpress tabels.
+
+For example:
+```php
+'wp-mysql' => [
+    'driver' => 'mysql',
+    'host' => env('WP_DB_HOST', '127.0.0.1'),
+    'port' => env('WP_DB_PORT', '3306'),
+    'database' => env('WP_DB_DATABASE', 'forge'),
+    'username' => env('WP_DB_USERNAME', 'forge'),
+    'password' => env('WP_DB_PASSWORD', ''),
+    'unix_socket' => env('WP_DB_SOCKET', ''),
+    'charset' => 'utf8mb4',
+    'collation' => 'utf8mb4_unicode_ci',
+    'prefix' => 'wp_',
+    'prefix_indexes' => true,
+    'strict' => true,
+    'engine' => null,
+],
+```
+
 ## Configuration
 
 `password_resets` table (from Laravel default auth mechanism) is required to hold reset password token. If you do not have `password_resets` table then use this migration instead
@@ -93,6 +124,9 @@ class CreatePasswordResetsTable extends Migration
 }
 ```
 
+## Extension
+Alternatively, if you want to use a custom user model, you should have it extend `MrShan0\WordpressAuth\Models\WordpressUser` and specify the name of your model in `config/auth.php` under `providers` -> `wordpress` -> `model`.
+
 ## Usage
 You need to define `wordpress` **guard** explicitly to load the driver.
 ### Examples
@@ -107,6 +141,10 @@ Auth::guard('wordpress')->attempt([
 
 // get user object
 Auth::guard('wordpress')->user();
+
+// Update wordpress compatible password
+$user->user_pass = app('wordpress-auth')->make('new_password');
+$user->save();
 
 // logout
 Auth::guard('wordpress')->logout();

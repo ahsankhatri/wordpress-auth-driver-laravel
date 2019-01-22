@@ -5,9 +5,9 @@ namespace MrShan0\WordpressAuth;
 use Auth;
 use Hautelook\Phpass\PasswordHash;
 use Illuminate\Support\ServiceProvider;
-use MrShan0\WordpressAuth\Hashing\WordPressHasher;
 use MrShan0\WordpressAuth\Auth\EloquentWordpressUserProvider;
 use MrShan0\WordpressAuth\Guard\WordpressGuard;
+use MrShan0\WordpressAuth\Hashing\WordPressHasher;
 
 class WordpressAuthServiceProvider extends ServiceProvider
 {
@@ -19,32 +19,43 @@ class WordpressAuthServiceProvider extends ServiceProvider
     protected $defer = false;
 
     /**
+     * Perform post-registration booting of services.
+     *
+     * @return void
+     */
+    public function boot()
+    {
+        $this->publishes([
+            __DIR__ . '/../config/wordpress-auth.php' => config_path('wordpress-auth.php'),
+        ]);
+    }
+
+    /**
      * Register bindings in the container.
      *
      * @return void
      */
     public function register()
     {
-        $this->mergeConfigFrom(__DIR__ . '/../config/hash.php', 'wordpress-hash.hash');
+        $this->mergeConfigFrom(__DIR__ . '/../config/wordpress-auth.php', 'wordpress-auth');
 
-        Auth::extend('wordpress', function($app) {
+        Auth::extend('wordpress', function ($app) {
             return new WordpressGuard(
-                new EloquentWordpressUserProvider($app['wordpress-hash'], $config['model'])
+                new EloquentWordpressUserProvider($app['wordpress-auth'], $config['model'])
             );
         });
 
-        $this->app->singleton('wordpress-hash', function ($app)
-        {
-            $iteration_count = $app['config']->get('wordpress-hash.hash.iteration_count');
-            $portable_hashes = $app['config']->get('wordpress-hash.hash.portable_hashes');
+        $this->app->singleton('wordpress-auth', function ($app) {
+            $iteration_count = $app['config']->get('wordpress-auth.hash.iteration_count');
+            $portable_hashes = $app['config']->get('wordpress-auth.hash.portable_hashes');
 
             $hasher = new PasswordHash($iteration_count, $portable_hashes);
 
             return new WordPressHasher($hasher);
         });
 
-        Auth::provider('eloquent.wordpress', function($app, array $config) {
-            return new EloquentWordpressUserProvider($app['wordpress-hash'], $config['model']);
+        Auth::provider('eloquent.wordpress', function ($app, array $config) {
+            return new EloquentWordpressUserProvider($app['wordpress-auth'], $config['model']);
         });
     }
 
@@ -55,6 +66,6 @@ class WordpressAuthServiceProvider extends ServiceProvider
      */
     public function provides()
     {
-        return ['wordpress-hash'];
+        return ['wordpress-auth'];
     }
 }
