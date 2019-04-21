@@ -4,14 +4,59 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Seperate Database Connection
+    | Separate Database Connection
     |--------------------------------------------------------------------------
     |
     | You can define your own connection other than the default one in
     | database.php to use multiple connections/database in one.
     |
     */
-    'connection' => 'mysql',
+    'connection' => 'wp-mysql',
+
+    /*
+    |--------------------------------------------------------------------------
+    | WordPress Customized Options
+    |--------------------------------------------------------------------------
+    |
+    | Due to any reason if you plan to change your wordpress schema or
+    | make usage of any additional column cab be defined here.
+    |
+    */
+    'options' => [
+
+        /*
+        |--------------------------------------------------------------------------
+        | WP Column Mapping
+        |--------------------------------------------------------------------------
+        |
+        | Following option will help laravel auth scaffolding to work with
+        | wordpress default (or customizeable) column names
+        |
+        */
+        'force_wp_email' => true,
+        'force_wp_password' => true,
+
+        /*
+        |--------------------------------------------------------------------------
+        | WP Email Column
+        |--------------------------------------------------------------------------
+        |
+        | If you're using any other column name other than default `user_email`
+        |
+        */
+       'email_column' => 'user_email',
+
+        /*
+        |--------------------------------------------------------------------------
+        | WP Password Column
+        |--------------------------------------------------------------------------
+        |
+        | If you're using any other column name other than default `user_pass`
+        |
+        */
+       'password_column' => 'user_pass',
+
+    ],
 
     /*
     |--------------------------------------------------------------------------

@@ -85,8 +85,36 @@ class WordpressUser extends Authenticatable
     {
         parent::__construct($attributes);
 
-        // Set connection from config
+        // Set connection via config explicitly.
         $this->setConnection(config('wordpress-auth.connection', 'mysql'));
+    }
+
+    /**
+     * Accessor to update password via Auth scaffolding
+     */
+    public function setPasswordAttribute($value)
+    {
+        $this->attributes[$this->getPasswordColumnKey()] = $value;
+    }
+
+    /**
+     * Return the key used for email in wordpress schema
+     *
+     * @return string
+     */
+    public function getEmailColumnKey()
+    {
+        return config('wordpress-auth.options.email_column', 'user_email');
+    }
+
+    /**
+     * Return the key used for password in wordpress schema
+     *
+     * @return string
+     */
+    public function getPasswordColumnKey()
+    {
+        return config('wordpress-auth.options.password_column', 'user_pass');
     }
 
     /**
@@ -96,7 +124,7 @@ class WordpressUser extends Authenticatable
      */
     public function getEmailForPasswordReset()
     {
-        return $this->user_email;
+        return $this->{$this->getEmailColumnKey()};
     }
 
     /**
@@ -106,7 +134,7 @@ class WordpressUser extends Authenticatable
      */
     public function getAuthPassword()
     {
-        return $this->user_pass;
+        return $this->{$this->getPasswordColumnKey()};
     }
 
     /**

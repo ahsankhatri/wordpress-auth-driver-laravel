@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 2.1.1
+ - Added Laravel 5.8 support.
+ - Extend config `wordpress-hash.php` with option to map email and password column if you've changed and default connection set to `wp-mysql`
+ - Few spelling glitches.
+ - Added Password accessor in WordpressUser Model
+ - README.md and CHANGELOG.md Updated
+
 ## 2.1.0
  - Support added for seperate connection in `config/database.php`
  - Default `wp_` prefix removed from `Models\WordpressUser.php`. It'll be handled by connection in `config/database.php`

@@ -5,12 +5,12 @@
 | **Laravel**  |  **wordpress-auth-driver-laravel** |
 |---|---|
 | 5.2 to 5.5  | ^1.0  |
-| 5.6 to 5.7  | ^2.0  |
+| 5.6 to 5.8  | ^2.0  |
 
 ## Installation
 
 To install this package you will need
-  - Laravel 5.6|5.7 ([for older versions of laravel](https://github.com/ahsankhatri/wordpress-auth-driver-laravel/tree/v1))
+  - Laravel 5.6|5.7|5.8 ([for older versions of laravel](https://github.com/ahsankhatri/wordpress-auth-driver-laravel/tree/v1))
   - PHP 7.1
 
 The best way to install this package is with the help of composer. Run
@@ -127,6 +127,9 @@ class CreatePasswordResetsTable extends Migration
 ## Extension
 Alternatively, if you want to use a custom user model, you should have it extend `MrShan0\WordpressAuth\Models\WordpressUser` and specify the name of your model in `config/auth.php` under `providers` -> `wordpress` -> `model`.
 
+## Customization
+If you've renamed your `user_email` column of wordpress database, you need to first publish configurations of this package if you've not already, extend the model as mentioned above and make sure you've override your changes in your `$fillable` property and `config/wordpress-auth.php` config file which is being used for authentication scaffolding and sending notifications.
+
 ## Usage
 You need to define `wordpress` **guard** explicitly to load the driver.
 ### Examples
@@ -153,6 +156,30 @@ Auth::guard('wordpress')->logout();
 You may also change default guard in `config/auth.php` then your code will look like
 ```php
 Auth::loginUsingId(5);
+```
+
+If you haven't set default guard and wanted to take advantage of **Password Resets** (Auth Scaffolding) in laravel. You may need to define `guard` and `broker` explicitly in `Auth/ForgotPasswordController.php` and `Auth/ResetPasswordController.php` as
+
+```php
+/**
+ * Get the broker to be used during password reset.
+ *
+ * @return \Illuminate\Contracts\Auth\PasswordBroker
+ */
+public function broker()
+{
+    return \Password::broker('wordpress');
+}
+
+/**
+ * Get the guard to be used during password reset.
+ *
+ * @return \Illuminate\Contracts\Auth\StatefulGuard
+ */
+protected function guard()
+{
+    return \Auth::guard('wordpress');
+}
 ```
 
 ## Changelog
