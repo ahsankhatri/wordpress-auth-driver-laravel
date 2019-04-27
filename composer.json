@@ -14,7 +14,7 @@
     "require": {
         "php": "^7.1",
         "hautelook/phpass": ">=0.3",
-        "laravel/framework": ">=5.6 <=5.8"
+        "laravel/framework": ">=5.6 <5.9"
     },
     "autoload": {
         "psr-4": {
