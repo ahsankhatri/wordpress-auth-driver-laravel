@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## 2.2.1
+ - README.md and CHANGELOG.md Updated.
+
+## 2.2.0
+ - Added Laravel 6.x support.
+
+## 2.1.2
+ - Updated laravel required version in `composer.json` file.
+
 ## 2.1.1
  - Added Laravel 5.8 support.
  - Extend config `wordpress-hash.php` with option to map email and password column if you've changed and default connection set to `wp-mysql`
