@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 2.2.2
+ - Added support till Laravel 7.8.x
+
 ## 2.2.1
  - README.md and CHANGELOG.md Updated.
 
